@@ -1,8 +1,12 @@
 <?php
 require __DIR__ . '/includes/funciones.php';
 
-if ($_POST) {
-    eliminar_usuario($_POST);
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
+    $id = (int) $_POST['id'];
+    eliminar_usuario($id);
+
+    header("Location: index.php");
+    exit;
 }
 
 $usuarios = obtener_usuarios();
@@ -25,12 +29,12 @@ $usuarios = obtener_usuarios();
     <select name="id" required>
         <?php while($u = mysqli_fetch_assoc($usuarios)): ?>
             <option value="<?php echo $u['id']; ?>">
-                <?php echo $u['nombre']." ".$u['apellido']; ?>
+                <?php echo $u['nombre'] . " " . $u['apellido']; ?>
             </option>
         <?php endwhile; ?>
     </select>
 
-    <button>Eliminar</button>
+    <button type="submit">Eliminar</button>
 </form>
 </div>
 
